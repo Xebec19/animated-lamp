@@ -1,14 +1,14 @@
-package main
+package handlers
 
 import (
+	"animated-lamp/pkg/render"
 	"errors"
 	"fmt"
 	"net/http"
-	"text/template"
 )
 
 func Home(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "home.page.html")
+	render.RenderTemplate(w, "home.page.html")
 }
 
 // About is the about page handler
@@ -42,13 +42,4 @@ func divideValues(x, y float32) (float32, error) {
 	}
 	result := x / y
 	return result, nil
-}
-
-func renderTemplate(w http.ResponseWriter, tmpl string) {
-	parsedTemplate, _ := template.ParseFiles("./templates/" + tmpl)
-	err := parsedTemplate.Execute(w, nil)
-	if err != nil {
-		fmt.Println("Error parsing template:", err)
-		return
-	}
 }
