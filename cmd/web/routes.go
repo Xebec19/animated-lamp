@@ -10,6 +10,7 @@ import (
 
 func routes(app *config.AppConfig) http.Handler {
 	mux := pat.New()
+	mux.Use(WriteToConsole)
 	mux.Get("/", http.HandlerFunc(handler.Repo.Home))
 	mux.Get("/about", http.HandlerFunc(handlers.Repo.about))
 	return max
