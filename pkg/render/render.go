@@ -1,6 +1,7 @@
 package render
 
 import (
+	"animated-lamp/pkg/config"
 	"fmt"
 	"net/http"
 	"path/filepath"
@@ -9,7 +10,23 @@ import (
 
 var functions = template.FuncMap{}
 
+var app *config.AppConfig
+
+// NewTemplates sets the config for the template package
+func NewTemplate(a *config.AppConfig)
+
+func AddDefaultData(td *models.TemplateData) *models.TemplateData{
+	
+	return td
+}
+
 func RenderTemplate(w http.ResponseWriter, tmpl string) {
+	var tc map[string]*template.Template
+	if app.UseCache {
+		tc := app.TemplateCache
+	} else {
+		tc, err = CreateTemplateCache()
+	}
 	_, err := RenderTemplateTest(w)
 	if err != nil {
 		fmt.Println("Error getting template cache:", err)
@@ -23,6 +40,7 @@ func RenderTemplate(w http.ResponseWriter, tmpl string) {
 }
 
 func RenderTemplateTest(w http.ResponseWriter, tmpl string) (map[string]*template.Template, error) {
+	tc := app.TemplateCache
 	myCache := map[string]*template.Template{}
 	pages, err := filepath.Glob("./templates/*.page.tmpl")
 	if err != nil {

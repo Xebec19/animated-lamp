@@ -1,11 +1,42 @@
 package handlers
 
 import (
+	"animated-lamp/pkg/config"
 	"animated-lamp/pkg/render"
 	"errors"
 	"fmt"
 	"net/http"
 )
+
+// TemplateData holds data sent from handlers to templates
+type TemplateData struct {
+	StringMap map[string]string
+	IntMap    map[string]int
+	FloatMap  map[string]float32
+	Data      map[string]interface{}
+	CSRFToken string
+	Flash     string
+	Warning   string
+	Error     string
+}
+
+var Repo *Repository
+
+type Repository struct {
+	App *config.AppConfig
+}
+
+// NewRepo creates new repository
+func NewRepo(a *config.AppConfig) *Repository {
+	return &Repository{
+		App: a,
+	}
+}
+
+// NewHandlers sets the repository for handlers
+func NewHandlers(r *Repository) {
+	Repo = r
+}
 
 func Home(w http.ResponseWriter, r *http.Request) {
 	render.RenderTemplate(w, "home.page.html")
