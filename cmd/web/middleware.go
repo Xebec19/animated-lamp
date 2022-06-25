@@ -18,3 +18,7 @@ func NoSruve(next http.Handler) http.Handler {
 		SameSite: http.SameSiteLaxMode
 	})
 }
+
+func SessionLoad(next http.Handler) http.Handler {
+	return session.LoadAndSave(next);
+}
